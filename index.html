@@ -29,7 +29,7 @@ h1{margin:2px 0 0;font-size:24px;font-weight:600}
 .bar .sp{flex:1}.bar .st{font-size:13px;color:var(--sub);white-space:nowrap}
 .name-l{font-size:12px;color:var(--sub);margin-top:6px}
 .name{font-size:26px;font-weight:700;margin:0 0 10px}
-.tabs{display:flex;gap:2px;overflow-x:auto;border-bottom:2px solid var(--acc);padding:4px 0 0;scrollbar-width:none}
+.tabs{display:flex;flex-wrap:wrap;gap:2px;border-bottom:2px solid var(--acc);padding:4px 0 0;scrollbar-width:none}
 .tab{flex:none;background:none;border:0;padding:9px 14px;border-radius:10px 10px 0 0;color:var(--sub);font-size:14px}
 .tab.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 -1px 0 var(--line)}
 .tools{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0;flex-wrap:wrap}
@@ -49,6 +49,9 @@ h1{margin:2px 0 0;font-size:24px;font-weight:600}
 .cell input{margin:0 8px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:7px 8px;font-size:14px;width:calc(100% - 16px)}
 .grid .cell .pl{display:flex;flex-direction:column;gap:4px;margin:0 8px 8px}.grid .cell .pl select{margin:0;width:100%;min-width:0;font-size:13px;padding:5px 4px}.grid .cell .pr{display:flex;gap:4px}.mt{flex:none;border:1px solid var(--line);background:var(--bg);color:var(--sub);border-radius:8px;padding:0 8px;font-size:13px}.mt.on{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:600}
 @media (max-width:620px){.grid .cell .pl{margin:0 4px 4px;gap:3px}.grid .cell .pl select{font-size:11px;padding:3px 2px}.grid .hd{font-size:11px;padding:0 6px;height:26px;bottom:4px;left:4px}.grid .lb{display:none}.grid .rep{padding:0 8px}.grid .del{padding:0 8px}}
+.cell .pr{display:flex;gap:4px;margin:0 8px 8px}.grid .cell .pr select{margin:0;flex:1;width:auto;min-width:0}
+@media (max-width:620px){.grid .cell .pr{margin:0 4px 4px;gap:3px}.grid .cell .pr .mt{padding:0 5px;font-size:11px}}
+.badge[data-h]{padding:4px 10px;font-size:13px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
 .hd{position:absolute;left:8px;bottom:8px;height:30px;padding:0 10px;border-radius:8px;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:13px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
 .grp{margin-top:6px}.gh{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:18px 0 10px;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px}
 .gh .sp{flex:1}.gh .gl{font-size:15px}.gh select,.gh input{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:7px 8px;font-size:14px;min-width:0}.gh input{flex:1;min-width:160px}
@@ -69,14 +72,17 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end}
 <dialog id="dlg"><b id="dt"></b><input id="di" maxlength="60"><div class="row"><button class="btn ghost" id="dc">キャンセル</button><button class="btn" id="dok">保存</button></div></dialog>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-const TABS=["他金物","金物","設備工事","内装","外壁","構造","防蟻工事","屋根工事","土台工事","断熱","基礎工事","台帳"];
+const TABS=["他金物","金物","設備工事","内装","外壁","構造","防蟻工事","屋根工事","土台工事","断熱","基礎工事","台帳","項目名"];
+const WORK=TABS.filter(t=>t!=="台帳"&&t!=="項目名"),LT=WORK.filter(t=>t!=="金物");
+function lists(){S.lists=S.lists||{};LT.forEach(t=>{if(!S.lists[t])S.lists[t]=[...new Set([...(ITEMS[t]||[]).filter(o=>o!=="項目名"),...((S.items&&S.items[t])||[])])]});return S.lists}
 const ITEMS={"他金物":["筋交い柱頭","筋交い柱脚","筋交い全体","火打ち金物","羽子板ボルト","項目名"],
-"金物":["柱頭柱脚金物","かど金物","ホールダウン金物","アンカーボルト","梁受け金物","項目名"],
+"金物":["柱脚ホールダウン","柱頭シナーコーナー","柱脚シナーコーナー","柱頭スリムビルトコーナー","柱脚スリムビルトコーナー","ほぞ金物","マスタープレート","項目名"],
 "設備工事":["給水配管","排水配管","電気配線","換気ダクト","項目名"],"内装":["下地","石膏ボード","項目名"],
 "外壁":["防水シート","通気胴縁","サッシ廻り","項目名"],"構造":["柱","梁","土台","耐力壁","項目名"],
 "防蟻工事":["薬剤散布","項目名"],"屋根工事":["野地板","ルーフィング","項目名"],"土台工事":["土台敷き","項目名"],
 "断熱":["壁断熱","天井断熱","項目名"],"基礎工事":["配筋","アンカーボルト","コンクリート打設","項目名"]};
 const IRO="いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせす".split(""),SEL=["他金物","金物"],placeOf=p=>(p.fl||p.ir||p.no)?[p.fl,p.ir&&(p.irM?"又":"")+p.ir,p.no&&(p.noM?"又":"")+p.no].filter(Boolean).join(" "):(p.place||"");
+const noOf=p=>p.no?(p.noM?"又":"")+p.no:(p.dori||"");
 const $=s=>document.querySelector(s);
 let S={sites:[]},cur=null,tab="他金物",db,saveT,saved=true;
 const uid=()=>"s"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
@@ -90,6 +96,7 @@ const fmt=t=>{const d=new Date(t),p=n=>String(n).padStart(2,"0");return `${d.get
 function yn(msg){return new Promise(res=>{$("#cm").textContent=msg;const d=$("#cfm");d.showModal();const done=v=>{d.close();res(v)};$("#cy").onclick=()=>done(true);$("#cn").onclick=()=>done(false)})}
 function ask(title,val){return new Promise(res=>{$("#dt").textContent=title;$("#di").value=val||"";const d=$("#dlg");d.showModal();
 const done=v=>{d.close();$("#dok").onclick=$("#dc").onclick=null;res(v)};$("#dok").onclick=()=>done($("#di").value.trim()||null);$("#dc").onclick=()=>done(null)})}
+$("#di").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.isComposing&&e.keyCode!==229){e.preventDefault();$("#dok").click()}});
 function shrink(file){return new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const m=2400,k=Math.min(1,m/Math.max(im.width,im.height));
 const c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.8))};im.src=r.result};r.readAsDataURL(file)})}
 function pick(multi){return new Promise(res=>{const i=document.createElement("input");i.type="file";i.accept="image/*";i.multiple=!!multi;i.style.display="none";document.body.appendChild(i);i.onchange=()=>{res([...i.files]);i.remove()};i.click()})}
@@ -111,27 +118,31 @@ a.innerHTML=`<div class="bar"><button class="btn ghost" id="bk" aria-label="戻�
 $("#bk").onclick=()=>{cur=null;location.hash="";render()};$("#xl").onclick=exportPdf;
 a.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{tab=b.dataset.t;detail(a)});body(s)}
 function mig(s){s.groups=s.groups||[];const m={},k=p=>[p.tab,p.fl||"",p.ir||"",p.irM?1:0,p.no||"",p.noM?1:0,p.place||""].join("|");
-s.photos.forEach(p=>{if(p.g&&s.groups.some(g=>g.id===p.g))return;const key=k(p);if(!m[key]){const g={id:uid(),tab:p.tab,fl:p.fl||"",ir:p.ir||"",irM:!!p.irM,no:p.no||"",noM:!!p.noM,place:p.place||""};s.groups.push(g);m[key]=g.id}p.g=m[key]})}
+s.photos.forEach(p=>{if(p.g&&s.groups.some(g=>g.id===p.g))return;const key=k(p);if(!m[key]){const g={id:uid(),tab:p.tab,fl:p.fl||"",ir:p.ir||"",irM:!!p.irM,no:p.no||"",noM:!!p.noM,place:p.place||""};s.groups.push(g);m[key]=g.id}p.g=m[key]});
+s.groups.forEach(g=>{if(!g.no)return;s.photos.forEach(p=>{if(p.g===g.id&&!p.no){p.no=g.no;p.noM=!!g.noM}});g.no="";g.noM=false})}
 const gOf=(s,p)=>s.groups.find(g=>g.id===p.g)||{};
 function gUI(g){if(!SEL.includes(tab))return `<input data-gp="${g.id}" value="${esc(g.place||"")}" placeholder="何通りか（例：北側 2通り）" maxlength="60">`;
 const o=(arr,cur,ph)=>`<option value="">${ph}</option>`+arr.map(v=>`<option${String(cur)===String(v)?" selected":""}>${v}</option>`).join("");
 const mt=(k,on)=>`<button type="button" class="mt${on?" on":""}" data-gm="${g.id}" data-k="${k}">又</button>`;
-return `<select data-gf="${g.id}" data-k="fl" aria-label="階">${o(["1F","2F"],g.fl,"階")}</select>${mt("irM",g.irM)}<select data-gf="${g.id}" data-k="ir" aria-label="いろは">${o(IRO,g.ir,"いろは")}</select>${mt("noM",g.noM)}<select data-gf="${g.id}" data-k="no" aria-label="番号">${o(Array.from({length:20},(_,i)=>i+1),g.no,"番号")}</select>`}
+return `<select data-gf="${g.id}" data-k="fl" aria-label="階">${o(["1F","2F"],g.fl,"階")}</select>${mt("irM",g.irM)}<select data-gf="${g.id}" data-k="ir" aria-label="いろは">${o(IRO,g.ir,"いろは")}</select><span class="gl">通り</span>`}
 function body(s){const b=$("#body");
-if(tab==="台帳"){const r=s.photos.map(p=>`<tr><td><img src="${p.src}" alt=""></td><td>${p.tab}</td><td>${esc(placeOf(gOf(s,p)))}</td><td>${esc(p.label||"未設定")}</td><td>${esc(p.dori||"")}</td></tr>`).join("");
+if(tab==="台帳"){const r=s.photos.map(p=>`<tr><td><img src="${p.src}" alt=""></td><td>${p.tab}</td><td>${esc(placeOf(gOf(s,p)))}</td><td>${esc(p.label||"未設定")}</td><td>${esc(noOf(p))}</td></tr>`).join("");
 b.innerHTML=r?`<div class="sc" style="margin-top:14px"><table><tr><th>写真</th><th>工種</th><th>何通り</th><th>項目名</th><th>何通り（写真）</th></tr>${r}</table></div>`:`<div class="empty">写真がまだありません。</div>`;return}
-const gs=s.groups.filter(g=>g.tab===tab),sh=s.shape||"tall",cls={tall:"tall",wide:"wide",sq:"sq"}[sh],opts=(ITEMS[tab]||[]).filter(o=>o!=="項目名"),extra=(S.items&&S.items[tab])||[];
-const cell=(p,i)=>`<div class="cell" data-id="${p.id}"><div class="ph ${cls}"><img src="${p.src}" alt=""><span class="badge">${String(i+1).padStart(2,"0")}</span><button class="del" data-x="${p.id}" aria-label="削除">🗑<span class="lb"> 削除</span></button><button class="rep" data-r="${p.id}" aria-label="差し替え">⟳<span class="lb"> 差し替え</span></button><button type="button" class="hd" data-h="${p.id}" aria-label="ドラッグして入れ替え">⠿<span class="lb"> 移動</span></button></div>
+if(tab==="項目名")return itemsPage(s);
+const TG=tab==="金物";if(!TG&&!s.groups.some(g=>g.tab===tab))s.groups.push({id:uid(),tab,fl:"",ir:"",irM:false,no:"",noM:false,place:""});
+const gs=s.groups.filter(g=>g.tab===tab),sh=s.shape||"tall",cls={tall:"tall",wide:"wide",sq:"sq"}[sh],opts=TG?(ITEMS[tab]||[]).filter(o=>o!=="項目名"):lists()[tab],extra=TG?((S.items&&S.items[tab])||[]):[];
+const cell=(p,i)=>`<div class="cell" data-id="${p.id}"><div class="ph ${cls}"><img src="${p.src}" alt=""><span class="badge" data-h="${p.id}" aria-label="ドラッグして入れ替え">${String(i+1).padStart(2,"0")}</span><button class="del" data-x="${p.id}" aria-label="削除">🗑<span class="lb"> 削除</span></button><button class="rep" data-r="${p.id}" aria-label="差し替え">⟳<span class="lb"> 差し替え</span></button><button type="button" class="hd" data-h="${p.id}" aria-label="ドラッグして入れ替え">⠿<span class="lb"> 移動</span></button></div>
 <select data-l="${p.id}">${[...new Set([...opts,...extra,p.label||"項目名","項目名"])].map(o=>`<option value="${esc(o)}"${o===(p.label||"項目名")?" selected":""}>${esc(o)}</option>`).join("")}<option value="__add__">＋ 項目を追加…</option></select>
-<input data-dp="${p.id}" value="${esc(p.dori||"")}" placeholder="何通り" maxlength="30" aria-label="何通り"></div>`;
+${TG?`<div class="pr"><button type="button" class="mt${p.noM?" on":""}" data-pm="${p.id}" aria-label="又">又</button><select data-pn="${p.id}" aria-label="番号"><option value="">番号</option>${Array.from({length:20},(_,i)=>i+1).map(v=>`<option${String(p.no)===String(v)?" selected":""}>${v}</option>`).join("")}</select></div>`:""}</div>`;
 b.innerHTML=`<div class="tools"><span class="eyebrow" style="letter-spacing:.05em">枠の形</span><div class="seg">${[["tall","縦長"],["wide","横長"],["sq","正方形"]].map(([k,l])=>`<button data-sh="${k}" class="${sh===k?"on":""}">${l}</button>`).join("")}</div></div>`+
-(gs.length?gs.map(g=>`<section class="grp" data-gid="${g.id}"><div class="gh"><b class="gl">何通り</b>${gUI(g)}<span class="sp"></span><button class="ic" data-gx="${g.id}" aria-label="この通りを削除">🗑</button></div><div class="grid">${s.photos.filter(p=>p.g===g.id).map(cell).join("")}<button class="add" data-ap="${g.id}">＋ 写真を追加<span class="lb">ここへドラッグ＆ドロップでも追加</span></button></div></section>`).join(""):`<div class="empty">「通りを追加」を押して、何通りの金物かを選び、その下に写真を追加します。</div>`)+`<button class="btn addg" id="ag">＋ 通りを追加</button>`;
+(gs.length?gs.map(g=>`<section class="grp" data-gid="${g.id}">${TG?`<div class="gh"><b class="gl">何通り</b>${gUI(g)}<span class="sp"></span><button class="ic" data-gx="${g.id}" aria-label="この通りを削除">🗑</button></div>`:""}<div class="grid">${s.photos.filter(p=>p.g===g.id).map(cell).join("")}<button class="add" data-ap="${g.id}">＋ 写真を追加<span class="lb">ここへドラッグ＆ドロップでも追加</span></button></div></section>`).join(""):`<div class="empty">「通りを追加」を押して、何通りの金物かを選び、その下に写真を追加します。</div>`)+(TG?`<button class="btn addg" id="ag">＋ 通りを追加</button>`:"");
 const G=id=>s.groups.find(g=>g.id===id);
 b.querySelectorAll("[data-sh]").forEach(e=>e.onclick=()=>{s.shape=e.dataset.sh;save();body(s)});
 b.querySelectorAll("[data-l]").forEach(e=>e.onchange=async()=>{const p=s.photos.find(p=>p.id===e.dataset.l);
-if(e.value==="__add__"){const n=await ask("項目名を追加","");if(n){S.items=S.items||{};const ex=S.items[tab]=S.items[tab]||[];if(!(ITEMS[tab]||[]).includes(n)&&!ex.includes(n))ex.push(n);p.label=n;touch(s)}body(s);return}
+if(e.value==="__add__"){const n=await ask("項目名を追加","");if(n){if(TG){S.items=S.items||{};const ex=S.items[tab]=S.items[tab]||[];if(!(ITEMS[tab]||[]).includes(n)&&!ex.includes(n))ex.push(n)}else{const L=lists()[tab];if(!L.includes(n))L.push(n)}p.label=n;touch(s)}body(s);return}
 p.label=e.value;touch(s)});
-b.querySelectorAll("[data-dp]").forEach(e=>e.oninput=()=>{s.photos.find(p=>p.id===e.dataset.dp).dori=e.value;touch(s)});
+b.querySelectorAll("[data-pm]").forEach(e=>e.onclick=()=>{const p=s.photos.find(p=>p.id===e.dataset.pm);p.noM=!p.noM;e.classList.toggle("on",p.noM);touch(s)});
+b.querySelectorAll("[data-pn]").forEach(e=>e.onchange=()=>{s.photos.find(p=>p.id===e.dataset.pn).no=e.value;touch(s)});
 b.querySelectorAll("[data-h]").forEach(h=>h.onpointerdown=ev=>{ev.preventDefault();const id=h.dataset.h,cell=h.closest(".cell"),ghost=cell.querySelector("img").cloneNode();
 Object.assign(ghost.style,{position:"fixed",width:cell.offsetWidth*.6+"px",opacity:.85,pointerEvents:"none",zIndex:50,borderRadius:"10px",boxShadow:"0 6px 18px rgba(0,0,0,.35)"});
 document.body.appendChild(ghost);cell.style.opacity=.4;let tgt=null,tg=null;
@@ -152,23 +163,28 @@ b.querySelectorAll("[data-ap]").forEach(e=>e.onclick=async()=>{const fs=await pi
 b.querySelectorAll(".grp").forEach((sec,i)=>{const gid=gs[i].id,on=v=>sec.classList.toggle("drop",v),isF=e=>[...(e.dataTransfer?.types||[])].includes("Files");
 sec.ondragover=e=>{if(!isF(e))return;e.preventDefault();on(true)};sec.ondragleave=e=>{if(!sec.contains(e.relatedTarget))on(false)};
 sec.ondrop=async e=>{if(!isF(e))return;e.preventDefault();on(false);const fs=[...e.dataTransfer.files].filter(f=>f.type.startsWith("image/"));for(const f of fs)s.photos.push({id:uid(),tab,g:gid,label:"項目名",src:await shrink(f)});if(fs.length){touch(s);detail($("#app"))}}});
-$("#ag").onclick=()=>{s.groups.push({id:uid(),tab,fl:"",ir:"",irM:false,no:"",noM:false,place:""});touch(s);body(s)}}
+if(TG)$("#ag").onclick=()=>{s.groups.push({id:uid(),tab,fl:"",ir:"",irM:false,no:"",noM:false,place:""});touch(s);body(s)}}
+function itemsPage(s){const b=$("#body"),L=lists();
+b.innerHTML=`<p class="name-l" style="margin:14px 0 4px">ここで直した項目名は、全部の現場で使われます（金物タブ以外）。</p>`+LT.map(t=>`<section class="grp"><div class="gh"><b class="gl">${t}</b></div><table>${L[t].map((n,i)=>`<tr><td>${esc(n)}</td><td style="width:1%;white-space:nowrap"><button class="ic" data-ie="${t}" data-i="${i}" aria-label="名前を変更">✎</button><button class="ic" data-idel="${t}" data-i="${i}" aria-label="削除">🗑</button></td></tr>`).join("")}</table><button class="btn ghost" style="margin-top:8px" data-ia="${t}">＋ 項目を追加</button></section>`).join("");
+b.querySelectorAll("[data-ia]").forEach(e=>e.onclick=async()=>{const t=e.dataset.ia,n=await ask(`${t}に項目名を追加`,"");if(n&&!L[t].includes(n)){L[t].push(n);touch(s)}itemsPage(s)});
+b.querySelectorAll("[data-ie]").forEach(e=>e.onclick=async()=>{const t=e.dataset.ie,i=+e.dataset.i,o=L[t][i],n=await ask("項目名を変更",o);if(!n||n===o)return;if(L[t].includes(n)){alert("同じ項目名があります。");return}L[t][i]=n;S.sites.forEach(x=>x.photos.forEach(p=>{if(p.tab===t&&p.label===o)p.label=n}));touch(s);itemsPage(s)});
+b.querySelectorAll("[data-idel]").forEach(e=>e.onclick=()=>{const t=e.dataset.idel,i=+e.dataset.i;yn(`「${L[t][i]}」をリストから削除しますか？（もう付けてある写真の項目名はそのまま残ります）`).then(ok=>{if(ok){L[t].splice(i,1);touch(s);itemsPage(s)}})})}
 function touch(s){s.updated=Date.now();save()}
 const loadImg=src=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=src});
 async function exportPdf(){const s=site();
-mig(s);const secs=[];TABS.slice(0,-1).forEach(t=>s.groups.filter(g=>g.tab===t).forEach(g=>{const ps=s.photos.filter(p=>p.g===g.id);if(ps.length)secs.push({g,ps})}));
+mig(s);const secs=[];WORK.forEach(t=>s.groups.filter(g=>g.tab===t).forEach(g=>{const ps=s.photos.filter(p=>p.g===g.id);if(ps.length)secs.push({g,ps})}));
 if(!secs.length){alert("写真がありません。");return}
 const btn=$("#xl");btn.disabled=true;btn.textContent="作成中…";
 try{const W=1240,H=1754,cw=260,ch={tall:347,wide:195,sq:260}[s.shape||"tall"],rowH=ch+85,HH=60,top=145,bot=H-70,pdf=new window.jspdf.jsPDF({unit:"mm",format:"a4"}),F="'Hiragino Sans','Noto Sans JP','Yu Gothic',sans-serif";
 const u=210/W,K=4,T=(str,px,col,bold,x,y,mw)=>{const f=(bold?"bold ":"")+px+"px "+F,m=document.createElement("canvas").getContext("2d");m.font=f;let tr=false;while(mw&&str.length>1&&m.measureText(str+(tr?"…":"")).width>mw){str=str.slice(0,-1);tr=true}if(tr)str+="…";const w=Math.ceil(m.measureText(str).width)+4,h=Math.ceil(px*1.5),c=document.createElement("canvas");c.width=w*K;c.height=h*K;const z=c.getContext("2d");z.scale(K,K);z.font=f;z.fillStyle=col;z.textBaseline="top";z.fillText(str,2,2);pdf.addImage(c.toDataURL("image/png"),"PNG",x*u,y*u,w*u,h*u)};
 const items=[];let pg=0,y=top;
-for(const {g,ps} of secs){if(y+HH+rowH>bot){pg++;y=top}items.push({h:1,pg,y,g});y+=HH;
+for(const {g,ps} of secs){if(items.length){pg++;y=top}items.push({h:1,pg,y,g});y+=HH;
 ps.forEach((p,i)=>{if(i>0&&i%4===0){y+=rowH;if(y+rowH>bot){pg++;y=top}}items.push({pg,x:70+(i%4)*(cw+20),y,p})});y+=rowH+20}
 const pages=pg+1;let cp=-1;
 for(const it of items){if(it.pg!==cp){cp=it.pg;if(cp)pdf.addPage();T(s.name+"　金物検査",34,"#222",true,70,60);T(`${cp+1} / ${pages}`,24,"#888",false,W-160,68);pdf.setFillColor(192,67,42);pdf.rect(70*u,112*u,(W-140)*u,3*u,"F")}
-if(it.h){T(placeOf(it.g)||"未設定",28,"#222",true,70,it.y,W-140);continue}
+if(it.h){T(it.g.tab==="金物"?((it.g.ir?placeOf(it.g)+"通り":placeOf(it.g))||"未設定"):it.g.tab,28,"#222",true,70,it.y,W-140);continue}
 const im=await loadImg(it.p.src),r=Math.max(cw/im.width,ch/im.height),sw=cw/r,sh=ch/r,c=document.createElement("canvas");c.width=cw*K;c.height=ch*K;c.getContext("2d").drawImage(im,(im.width-sw)/2,(im.height-sh)/2,sw,sh,0,0,c.width,c.height);pdf.addImage(c.toDataURL("image/jpeg",.88),"JPEG",it.x*u,it.y*u,cw*u,ch*u);
-const lb=it.p.label&&it.p.label!=="項目名"?it.p.label:"";if(lb)T(lb,21,"#222",false,it.x,it.y+ch+6,cw);if(it.p.dori)T(it.p.dori,21,"#555",false,it.x,it.y+ch+40,cw)}
+const lb=it.p.label&&it.p.label!=="項目名"?it.p.label:"";if(lb)T(lb,21,"#222",false,it.x,it.y+ch+6,cw);if(it.p.tab==="金物"&&noOf(it.p))T(noOf(it.p),21,"#555",false,it.x,it.y+ch+40,cw)}
 const blob=pdf.output("blob"),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`${s.name}_金物検査.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},4000)}
 catch(e){if(e.code!=="declined")alert("PDFを保存できませんでした。")}
 btn.disabled=false;btn.textContent="⤓ PDF"}
