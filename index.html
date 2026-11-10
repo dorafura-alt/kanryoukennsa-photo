@@ -118,21 +118,29 @@ const o=(arr,cur,ph)=>`<option value="">${ph}</option>`+arr.map(v=>`<option${Str
 const mt=(k,on)=>`<button type="button" class="mt${on?" on":""}" data-gm="${g.id}" data-k="${k}">又</button>`;
 return `<select data-gf="${g.id}" data-k="fl" aria-label="階">${o(["1F","2F"],g.fl,"階")}</select>${mt("irM",g.irM)}<select data-gf="${g.id}" data-k="ir" aria-label="いろは">${o(IRO,g.ir,"いろは")}</select>${mt("noM",g.noM)}<select data-gf="${g.id}" data-k="no" aria-label="番号">${o(Array.from({length:20},(_,i)=>i+1),g.no,"番号")}</select>`}
 function body(s){const b=$("#body");
-if(tab==="台帳"){const r=s.photos.map(p=>`<tr><td><img src="${p.src}" alt=""></td><td>${p.tab}</td><td>${esc(placeOf(gOf(s,p)))}</td><td>${esc(p.label||"未設定")}</td></tr>`).join("");
-b.innerHTML=r?`<div class="sc" style="margin-top:14px"><table><tr><th>写真</th><th>工種</th><th>何通り</th><th>項目名</th></tr>${r}</table></div>`:`<div class="empty">写真がまだありません。</div>`;return}
-const gs=s.groups.filter(g=>g.tab===tab),sh=s.shape||"tall",cls={tall:"tall",wide:"wide",sq:"sq"}[sh],opts=ITEMS[tab]||["項目名"];
+if(tab==="台帳"){const r=s.photos.map(p=>`<tr><td><img src="${p.src}" alt=""></td><td>${p.tab}</td><td>${esc(placeOf(gOf(s,p)))}</td><td>${esc(p.label||"未設定")}</td><td>${esc(p.dori||"")}</td></tr>`).join("");
+b.innerHTML=r?`<div class="sc" style="margin-top:14px"><table><tr><th>写真</th><th>工種</th><th>何通り</th><th>項目名</th><th>何通り（写真）</th></tr>${r}</table></div>`:`<div class="empty">写真がまだありません。</div>`;return}
+const gs=s.groups.filter(g=>g.tab===tab),sh=s.shape||"tall",cls={tall:"tall",wide:"wide",sq:"sq"}[sh],opts=(ITEMS[tab]||[]).filter(o=>o!=="項目名"),extra=(S.items&&S.items[tab])||[];
 const cell=(p,i)=>`<div class="cell" data-id="${p.id}"><div class="ph ${cls}"><img src="${p.src}" alt=""><span class="badge">${String(i+1).padStart(2,"0")}</span><button class="del" data-x="${p.id}" aria-label="削除">🗑<span class="lb"> 削除</span></button><button class="rep" data-r="${p.id}" aria-label="差し替え">⟳<span class="lb"> 差し替え</span></button><button type="button" class="hd" data-h="${p.id}" aria-label="ドラッグして入れ替え">⠿<span class="lb"> 移動</span></button></div>
-<select data-l="${p.id}">${[...new Set([p.label||"項目名",...opts])].map(o=>`<option${o===(p.label||"項目名")?" selected":""}>${esc(o)}</option>`).join("")}</select></div>`;
+<select data-l="${p.id}">${[...new Set([...opts,...extra,p.label||"項目名","項目名"])].map(o=>`<option value="${esc(o)}"${o===(p.label||"項目名")?" selected":""}>${esc(o)}</option>`).join("")}<option value="__add__">＋ 項目を追加…</option></select>
+<input data-dp="${p.id}" value="${esc(p.dori||"")}" placeholder="何通り" maxlength="30" aria-label="何通り"></div>`;
 b.innerHTML=`<div class="tools"><span class="eyebrow" style="letter-spacing:.05em">枠の形</span><div class="seg">${[["tall","縦長"],["wide","横長"],["sq","正方形"]].map(([k,l])=>`<button data-sh="${k}" class="${sh===k?"on":""}">${l}</button>`).join("")}</div></div>`+
-(gs.length?gs.map(g=>`<section class="grp"><div class="gh"><b class="gl">何通り</b>${gUI(g)}<span class="sp"></span><button class="ic" data-gx="${g.id}" aria-label="この通りを削除">🗑</button></div><div class="grid">${s.photos.filter(p=>p.g===g.id).map(cell).join("")}<button class="add" data-ap="${g.id}">＋ 写真を追加<span class="lb">ここへドラッグ＆ドロップでも追加</span></button></div></section>`).join(""):`<div class="empty">「通りを追加」を押して、何通りの金物かを選び、その下に写真を追加します。</div>`)+`<button class="btn addg" id="ag">＋ 通りを追加</button>`;
+(gs.length?gs.map(g=>`<section class="grp" data-gid="${g.id}"><div class="gh"><b class="gl">何通り</b>${gUI(g)}<span class="sp"></span><button class="ic" data-gx="${g.id}" aria-label="この通りを削除">🗑</button></div><div class="grid">${s.photos.filter(p=>p.g===g.id).map(cell).join("")}<button class="add" data-ap="${g.id}">＋ 写真を追加<span class="lb">ここへドラッグ＆ドロップでも追加</span></button></div></section>`).join(""):`<div class="empty">「通りを追加」を押して、何通りの金物かを選び、その下に写真を追加します。</div>`)+`<button class="btn addg" id="ag">＋ 通りを追加</button>`;
 const G=id=>s.groups.find(g=>g.id===id);
 b.querySelectorAll("[data-sh]").forEach(e=>e.onclick=()=>{s.shape=e.dataset.sh;save();body(s)});
-b.querySelectorAll("[data-l]").forEach(e=>e.onchange=()=>{s.photos.find(p=>p.id===e.dataset.l).label=e.value;touch(s)});
+b.querySelectorAll("[data-l]").forEach(e=>e.onchange=async()=>{const p=s.photos.find(p=>p.id===e.dataset.l);
+if(e.value==="__add__"){const n=await ask("項目名を追加","");if(n){S.items=S.items||{};const ex=S.items[tab]=S.items[tab]||[];if(!(ITEMS[tab]||[]).includes(n)&&!ex.includes(n))ex.push(n);p.label=n;touch(s)}body(s);return}
+p.label=e.value;touch(s)});
+b.querySelectorAll("[data-dp]").forEach(e=>e.oninput=()=>{s.photos.find(p=>p.id===e.dataset.dp).dori=e.value;touch(s)});
 b.querySelectorAll("[data-h]").forEach(h=>h.onpointerdown=ev=>{ev.preventDefault();const id=h.dataset.h,cell=h.closest(".cell"),ghost=cell.querySelector("img").cloneNode();
 Object.assign(ghost.style,{position:"fixed",width:cell.offsetWidth*.6+"px",opacity:.85,pointerEvents:"none",zIndex:50,borderRadius:"10px",boxShadow:"0 6px 18px rgba(0,0,0,.35)"});
-document.body.appendChild(ghost);cell.style.opacity=.4;let tgt=null;
-const mv=e=>{ghost.style.left=e.clientX-cell.offsetWidth*.3+"px";ghost.style.top=e.clientY-30+"px";const t=document.elementFromPoint(e.clientX,e.clientY)?.closest(".cell[data-id]");if(tgt&&tgt!==t)tgt.style.outline="";tgt=t&&t!==cell?t:null;if(tgt)tgt.style.outline="3px solid var(--acc)"};
-const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);removeEventListener("pointercancel",up);ghost.remove();cell.style.opacity="";if(tgt){tgt.style.outline="";const a=s.photos.findIndex(p=>p.id===id),c=s.photos.findIndex(p=>p.id===tgt.dataset.id),A=s.photos[a],B=s.photos[c],t=A.g;A.g=B.g;B.g=t;s.photos[a]=B;s.photos[c]=A;touch(s);body(s)}};
+document.body.appendChild(ghost);cell.style.opacity=.4;let tgt=null,tg=null;
+const clr=()=>{if(tgt)tgt.style.outline="";if(tg)tg.classList.remove("drop");tgt=tg=null};
+const mv=e=>{ghost.style.left=e.clientX-cell.offsetWidth*.3+"px";ghost.style.top=e.clientY-30+"px";const el=document.elementFromPoint(e.clientX,e.clientY),t=el?.closest(".cell[data-id]"),g=el?.closest(".grp[data-gid]");clr();if(t){if(t!==cell){tgt=t;t.style.outline="3px solid var(--acc)"}}else if(g){tg=g;g.classList.add("drop")}};
+const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);removeEventListener("pointercancel",up);ghost.remove();cell.style.opacity="";const T=tgt,Gp=tg;clr();
+const a=s.photos.findIndex(p=>p.id===id),A=s.photos[a];
+if(T){const c=s.photos.findIndex(p=>p.id===T.dataset.id),B=s.photos[c],same=A.g===B.g;s.photos.splice(a,1);let i=s.photos.indexOf(B);if(same&&a<c)i++;A.g=B.g;s.photos.splice(i,0,A);touch(s);body(s)}
+else if(Gp){s.photos.splice(a,1);A.g=Gp.dataset.gid;s.photos.push(A);touch(s);body(s)}};
 addEventListener("pointermove",mv);addEventListener("pointerup",up);addEventListener("pointercancel",up);mv(ev)});
 b.querySelectorAll("[data-gm]").forEach(e=>e.onclick=()=>{const g=G(e.dataset.gm);g[e.dataset.k]=!g[e.dataset.k];e.classList.toggle("on",!!g[e.dataset.k]);touch(s)});
 b.querySelectorAll("[data-gf]").forEach(e=>e.onchange=()=>{G(e.dataset.gf)[e.dataset.k]=e.value;touch(s)});
@@ -160,7 +168,7 @@ const pages=pg+1;let cp=-1;
 for(const it of items){if(it.pg!==cp){cp=it.pg;if(cp)pdf.addPage();T(s.name+"　金物検査",34,"#222",true,70,60);T(`${cp+1} / ${pages}`,24,"#888",false,W-160,68);pdf.setFillColor(192,67,42);pdf.rect(70*u,112*u,(W-140)*u,3*u,"F")}
 if(it.h){T(placeOf(it.g)||"未設定",28,"#222",true,70,it.y,W-140);continue}
 const im=await loadImg(it.p.src),r=Math.max(cw/im.width,ch/im.height),sw=cw/r,sh=ch/r,c=document.createElement("canvas");c.width=cw*K;c.height=ch*K;c.getContext("2d").drawImage(im,(im.width-sw)/2,(im.height-sh)/2,sw,sh,0,0,c.width,c.height);pdf.addImage(c.toDataURL("image/jpeg",.88),"JPEG",it.x*u,it.y*u,cw*u,ch*u);
-const lb=it.p.label&&it.p.label!=="項目名"?it.p.label:"";if(lb)T(lb,21,"#222",false,it.x,it.y+ch+6,cw)}
+const lb=it.p.label&&it.p.label!=="項目名"?it.p.label:"";if(lb)T(lb,21,"#222",false,it.x,it.y+ch+6,cw);if(it.p.dori)T(it.p.dori,21,"#555",false,it.x,it.y+ch+40,cw)}
 const blob=pdf.output("blob"),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`${s.name}_金物検査.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},4000)}
 catch(e){if(e.code!=="declined")alert("PDFを保存できませんでした。")}
 btn.disabled=false;btn.textContent="⤓ PDF"}
