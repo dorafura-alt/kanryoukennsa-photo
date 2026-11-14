@@ -44,7 +44,7 @@ h1{margin:2px 0 0;font-size:24px;font-weight:600}
 .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .badge{position:absolute;left:8px;top:8px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;border-radius:6px;padding:1px 7px}
 .rep,.del{position:absolute;bottom:8px;width:30px;height:30px;border-radius:8px;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:15px}
-.rep{right:8px;width:auto;padding:0 10px;font-size:13px}.del{left:8px;width:auto;padding:0 10px;font-size:13px}
+.rep{right:8px;width:auto;padding:0 10px;font-size:13px}.del{top:8px;right:8px;bottom:auto;left:auto;width:auto;padding:0 10px;font-size:13px}
 .cell select{margin:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:7px 8px;font-size:14px}
 .cell input{margin:0 8px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:7px 8px;font-size:14px;width:calc(100% - 16px)}
 .grid .cell .pl{display:flex;flex-direction:column;gap:4px;margin:0 8px 8px}.grid .cell .pl select{margin:0;width:100%;min-width:0;font-size:13px;padding:5px 4px}.grid .cell .pr{display:flex;gap:4px}.mt{flex:none;border:1px solid var(--line);background:var(--bg);color:var(--sub);border-radius:8px;padding:0 8px;font-size:13px}.mt.on{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:600}
@@ -52,6 +52,7 @@ h1{margin:2px 0 0;font-size:24px;font-weight:600}
 .cell .pr{display:flex;gap:4px;margin:0 8px 8px}.grid .cell .pr select{margin:0;flex:1;width:auto;min-width:0}
 @media (max-width:620px){.grid .cell .pr{margin:0 4px 4px;gap:3px}.grid .cell .pr .mt{padding:0 5px;font-size:11px}}
 .badge[data-h]{padding:4px 10px;font-size:13px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.fill{position:absolute;inset:0;width:100%;height:100%;border:2px dashed var(--line);background:none;color:var(--sub);font-size:14px;border-radius:0}@media (max-width:620px){.grid .fill{font-size:11px;padding:0 2px}}
 .hd{position:absolute;left:8px;bottom:8px;height:30px;padding:0 10px;border-radius:8px;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:13px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
 .grp{margin-top:6px}.gh{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:18px 0 10px;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px}
 .gh .sp{flex:1}.gh .gl{font-size:15px}.gh select,.gh input{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:7px 8px;font-size:14px;min-width:0}.gh input{flex:1;min-width:160px}
@@ -65,11 +66,14 @@ td img{width:56px;height:56px;object-fit:cover;border-radius:6px;display:block}
 .sc{overflow-x:auto}
 dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:20px;width:min(360px,90vw)}
 dialog input{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);margin:10px 0 14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;max-height:46vh;overflow-y:auto;margin:10px 0}.chip{min-width:44px;height:40px;border:1px solid var(--line);background:var(--bg);border-radius:10px;font-size:15px;padding:0 6px}.chip.s1{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:600}.chip.s2{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
+#blk{width:min(520px,94vw)}@media (max-width:620px){#blk{padding:14px}.chip{min-width:38px;height:34px;font-size:14px}.chips{max-height:30vh;gap:5px}#bs{max-height:28vh!important}#bs .nb{min-width:30px;height:28px}}#blk .seg{display:inline-flex;margin-left:8px}#bs{font-size:13px;color:var(--sub);margin:4px 0 14px;min-height:1.5em;max-height:34vh;overflow-y:auto}#bs .br{padding:6px 0;color:var(--ink);font-size:14px;border-bottom:1px solid var(--line)}#bs .br b{font-weight:600}#bs .ns{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}#bs .nb{min-width:34px;height:32px;border:1px solid var(--line);background:var(--bg);border-radius:8px;font-size:13px}#bs .nb.on{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:600}#bs .nl{width:34px;font-size:12px;color:var(--sub);align-self:center}#bs .nb.m{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
 dialog .row{display:flex;gap:8px;justify-content:flex-end}
 </style></head>
 <body><div class="wrap" id="app"></div>
 <dialog id="cfm"><p id="cm" style="margin:0 0 16px"></p><div class="row"><button class="btn ghost" id="cn">キャンセル</button><button class="btn" id="cy">削除</button></div></dialog>
 <dialog id="dlg"><b id="dt"></b><input id="di" maxlength="60"><div class="row"><button class="btn ghost" id="dc">キャンセル</button><button class="btn" id="dok">保存</button></div></dialog>
+<dialog id="blk"><b>通り芯一括</b><div style="margin-top:10px">階<div class="seg" id="bf"><button data-f="1F" class="on">1F</button><button data-f="2F">2F</button></div></div><div class="chips" id="bc"></div><div class="name-l" style="margin:0">通り：1回押す＝通り／2回押す＝又通り／3回押す＝やめる　番号：押すと選ぶ／もう一度でやめる</div><div id="bs"></div><div class="row"><button class="btn ghost" id="bn">キャンセル</button><button class="btn" id="by">追加</button></div></dialog>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 const TABS=["他金物","金物","設備工事","内装","外壁","構造","防蟻工事","屋根工事","土台工事","断熱","基礎工事","台帳","項目名"];
@@ -84,6 +88,7 @@ const ITEMS={"他金物":["筋交い柱頭","筋交い柱脚","筋交い全体",
 const IRO="いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせす".split(""),SEL=["他金物","金物"],placeOf=p=>(p.fl||p.ir||p.no)?[p.fl,p.ir&&(p.irM?"又":"")+p.ir,p.no&&(p.noM?"又":"")+p.no].filter(Boolean).join(" "):(p.place||"");
 const noOf=p=>p.no?(p.noM?"又":"")+p.no:(p.dori||"");
 const $=s=>document.querySelector(s);
+const isFile=e=>{const d=e.dataTransfer;return !!d&&([...(d.types||[])].includes("Files")||[...(d.items||[])].some(i=>i.kind==="file"))};
 let S={sites:[]},cur=null,tab="他金物",db,saveT,saved=true;
 const uid=()=>"s"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -110,7 +115,7 @@ if(!t)return open(id);ev.stopPropagation();const s=S.sites.find(x=>x.id===id);
 if(t.dataset.e)ask("現場名を編集",s.name).then(n=>{if(n){s.name=n;s.updated=Date.now();save();render()}});
 else yn(`「${s.name}」を削除しますか？写真もすべて消えます。`).then(ok=>{if(ok){S.sites=S.sites.filter(x=>x.id!==id);save();render()}})})}
 function open(id){cur=id;tab="他金物";location.hash=id;render();scrollTo(0,0)}
-function detail(a){const s=site();mig(s);const ph=s.photos,named=ph.filter(p=>p.label&&p.label!=="項目名").length;
+function detail(a){const s=site();mig(s);const ph=s.photos.filter(p=>p.src),named=ph.filter(p=>p.label&&p.label!=="項目名").length;
 a.innerHTML=`<div class="bar"><button class="btn ghost" id="bk" aria-label="戻る">←</button><span class="eyebrow">金物検査</span><span class="sp"></span><span class="st" id="st"></span><span class="st">${named} / ${ph.length} 枚</span><button class="btn ghost" id="xl">⤓ PDF</button></div>
 <div class="name-l">現場名</div><h2 class="name">${esc(s.name)}</h2>
 <div class="tabs">${TABS.map(t=>`<button class="tab${t===tab?" on":""}" data-t="${t}">${t}</button>`).join("")}</div>
@@ -126,32 +131,38 @@ const o=(arr,cur,ph)=>`<option value="">${ph}</option>`+arr.map(v=>`<option${Str
 const mt=(k,on)=>`<button type="button" class="mt${on?" on":""}" data-gm="${g.id}" data-k="${k}">又</button>`;
 return `<select data-gf="${g.id}" data-k="fl" aria-label="階">${o(["1F","2F"],g.fl,"階")}</select>${mt("irM",g.irM)}<select data-gf="${g.id}" data-k="ir" aria-label="いろは">${o(IRO,g.ir,"いろは")}</select><span class="gl">通り</span>`}
 function body(s){const b=$("#body");
-if(tab==="台帳"){const r=s.photos.map(p=>`<tr><td><img src="${p.src}" alt=""></td><td>${p.tab}</td><td>${esc(placeOf(gOf(s,p)))}</td><td>${esc(p.label||"未設定")}</td><td>${esc(noOf(p))}</td></tr>`).join("");
+if(tab==="台帳"){const r=s.photos.filter(p=>p.src).map(p=>`<tr><td><img src="${p.src}" alt=""></td><td>${p.tab}</td><td>${esc(placeOf(gOf(s,p)))}</td><td>${esc(p.label||"未設定")}</td><td>${esc(noOf(p))}</td></tr>`).join("");
 b.innerHTML=r?`<div class="sc" style="margin-top:14px"><table><tr><th>写真</th><th>工種</th><th>何通り</th><th>項目名</th><th>何通り（写真）</th></tr>${r}</table></div>`:`<div class="empty">写真がまだありません。</div>`;return}
 if(tab==="項目名")return itemsPage(s);
 const TG=tab==="金物";if(!TG&&!s.groups.some(g=>g.tab===tab))s.groups.push({id:uid(),tab,fl:"",ir:"",irM:false,no:"",noM:false,place:""});
 const gs=s.groups.filter(g=>g.tab===tab),sh=s.shape||"tall",cls={tall:"tall",wide:"wide",sq:"sq"}[sh],opts=TG?(ITEMS[tab]||[]).filter(o=>o!=="項目名"):lists()[tab],extra=TG?((S.items&&S.items[tab])||[]):[];
-const cell=(p,i)=>`<div class="cell" data-id="${p.id}"><div class="ph ${cls}"><img src="${p.src}" alt=""><span class="badge" data-h="${p.id}" aria-label="ドラッグして入れ替え">${String(i+1).padStart(2,"0")}</span><button class="del" data-x="${p.id}" aria-label="削除">🗑<span class="lb"> 削除</span></button><button class="rep" data-r="${p.id}" aria-label="差し替え">⟳<span class="lb"> 差し替え</span></button><button type="button" class="hd" data-h="${p.id}" aria-label="ドラッグして入れ替え">⠿<span class="lb"> 移動</span></button></div>
+const cell=(p,i)=>`<div class="cell" data-id="${p.id}"><div class="ph ${cls}">${p.src?`<img src="${p.src}" alt="">`:`<button class="fill" data-fl="${p.id}">＋<br>写真を入れる</button>`}<span class="badge" data-h="${p.id}" aria-label="ドラッグして入れ替え">${String(i+1).padStart(2,"0")}</span><button class="del" data-x="${p.id}" aria-label="削除">🗑<span class="lb"> 削除</span></button>${p.src?`<button class="rep" data-r="${p.id}" aria-label="差し替え">⟳<span class="lb"> 差し替え</span></button>`:""}<button type="button" class="hd" data-h="${p.id}" aria-label="ドラッグして入れ替え">⠿<span class="lb"> 移動</span></button></div>
 <select data-l="${p.id}">${[...new Set([...opts,...extra,p.label||"項目名","項目名"])].map(o=>`<option value="${esc(o)}"${o===(p.label||"項目名")?" selected":""}>${esc(o)}</option>`).join("")}<option value="__add__">＋ 項目を追加…</option></select>
 ${TG?`<div class="pr"><button type="button" class="mt${p.noM?" on":""}" data-pm="${p.id}" aria-label="又">又</button><select data-pn="${p.id}" aria-label="番号"><option value="">番号</option>${Array.from({length:20},(_,i)=>i+1).map(v=>`<option${String(p.no)===String(v)?" selected":""}>${v}</option>`).join("")}</select></div>`:""}</div>`;
 b.innerHTML=`<div class="tools"><span class="eyebrow" style="letter-spacing:.05em">枠の形</span><div class="seg">${[["tall","縦長"],["wide","横長"],["sq","正方形"]].map(([k,l])=>`<button data-sh="${k}" class="${sh===k?"on":""}">${l}</button>`).join("")}</div></div>`+
-(gs.length?gs.map(g=>`<section class="grp" data-gid="${g.id}">${TG?`<div class="gh"><b class="gl">何通り</b>${gUI(g)}<span class="sp"></span><button class="ic" data-gx="${g.id}" aria-label="この通りを削除">🗑</button></div>`:""}<div class="grid">${s.photos.filter(p=>p.g===g.id).map(cell).join("")}<button class="add" data-ap="${g.id}">＋ 写真を追加<span class="lb">ここへドラッグ＆ドロップでも追加</span></button></div></section>`).join(""):`<div class="empty">「通りを追加」を押して、何通りの金物かを選び、その下に写真を追加します。</div>`)+(TG?`<button class="btn addg" id="ag">＋ 通りを追加</button>`:"");
+(gs.length?gs.map(g=>`<section class="grp" data-gid="${g.id}">${TG?`<div class="gh"><b class="gl">何通り</b>${gUI(g)}<span class="sp"></span><button class="ic" data-gx="${g.id}" aria-label="この通りを削除">🗑</button></div>`:""}<div class="grid">${s.photos.filter(p=>p.g===g.id).map(cell).join("")}<button class="add" data-ap="${g.id}">＋ 写真を追加<span class="lb">ここへドラッグ＆ドロップでも追加</span></button></div></section>`).join(""):`<div class="empty">「通りを追加」を押して、何通りの金物かを選び、その下に写真を追加します。</div>`)+(TG?`<button class="btn ghost addg" id="bk1">通り芯一括</button><button class="btn addg" style="margin-top:10px" id="ag">＋ 通りを追加</button>`:"");
 const G=id=>s.groups.find(g=>g.id===id);
 b.querySelectorAll("[data-sh]").forEach(e=>e.onclick=()=>{s.shape=e.dataset.sh;save();body(s)});
 b.querySelectorAll("[data-l]").forEach(e=>e.onchange=async()=>{const p=s.photos.find(p=>p.id===e.dataset.l);
 if(e.value==="__add__"){const n=await ask("項目名を追加","");if(n){if(TG){S.items=S.items||{};const ex=S.items[tab]=S.items[tab]||[];if(!(ITEMS[tab]||[]).includes(n)&&!ex.includes(n))ex.push(n)}else{const L=lists()[tab];if(!L.includes(n))L.push(n)}p.label=n;touch(s)}body(s);return}
 p.label=e.value;touch(s)});
-b.querySelectorAll("[data-pm]").forEach(e=>e.onclick=()=>{const p=s.photos.find(p=>p.id===e.dataset.pm);p.noM=!p.noM;e.classList.toggle("on",p.noM);touch(s)});
-b.querySelectorAll("[data-pn]").forEach(e=>e.onchange=()=>{s.photos.find(p=>p.id===e.dataset.pn).no=e.value;touch(s)});
-b.querySelectorAll("[data-h]").forEach(h=>h.onpointerdown=ev=>{ev.preventDefault();const id=h.dataset.h,cell=h.closest(".cell"),ghost=cell.querySelector("img").cloneNode();
+const mates=p=>p.pair?s.photos.filter(q=>q.pair===p.pair):[p];
+b.querySelectorAll("[data-pm]").forEach(e=>e.onclick=()=>{const p=s.photos.find(p=>p.id===e.dataset.pm),v=!p.noM;mates(p).forEach(q=>q.noM=v);touch(s);body(s)});
+b.querySelectorAll("[data-pn]").forEach(e=>e.onchange=()=>{const p=s.photos.find(p=>p.id===e.dataset.pn);mates(p).forEach(q=>q.no=e.value);touch(s);body(s)});
+b.querySelectorAll("[data-fl]").forEach(e=>e.onclick=async()=>{const f=(await pick(false))[0];if(!f)return;s.photos.find(p=>p.id===e.dataset.fl).src=await shrink(f);touch(s);detail($("#app"))});
+b.querySelectorAll("[data-h]").forEach(h=>h.onpointerdown=ev=>{ev.preventDefault();const id=h.dataset.h,cell=h.closest(".cell"),ghost=cell.querySelector("img")?.cloneNode()||document.createElement("div");if(!ghost.src)Object.assign(ghost.style,{height:"60px",background:"var(--ph)"});
 Object.assign(ghost.style,{position:"fixed",width:cell.offsetWidth*.6+"px",opacity:.85,pointerEvents:"none",zIndex:50,borderRadius:"10px",boxShadow:"0 6px 18px rgba(0,0,0,.35)"});
-document.body.appendChild(ghost);cell.style.opacity=.4;let tgt=null,tg=null;
-const clr=()=>{if(tgt)tgt.style.outline="";if(tg)tg.classList.remove("drop");tgt=tg=null};
-const mv=e=>{ghost.style.left=e.clientX-cell.offsetWidth*.3+"px";ghost.style.top=e.clientY-30+"px";const el=document.elementFromPoint(e.clientX,e.clientY),t=el?.closest(".cell[data-id]"),g=el?.closest(".grp[data-gid]");clr();if(t){if(t!==cell){tgt=t;t.style.outline="3px solid var(--acc)"}}else if(g){tg=g;g.classList.add("drop")}};
-const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);removeEventListener("pointercancel",up);ghost.remove();cell.style.opacity="";const T=tgt,Gp=tg;clr();
+document.body.appendChild(ghost);cell.style.opacity=.4;let tgt=null,tg=null,tb=null,hov=null,hovT=0;
+const clr=()=>{if(tgt)tgt.style.outline="";if(tg)tg.classList.remove("drop");if(tb)tb.style.outline="";tgt=tg=tb=null};
+const mv=e=>{ghost.style.left=e.clientX-cell.offsetWidth*.3+"px";ghost.style.top=e.clientY-30+"px";const el=document.elementFromPoint(e.clientX,e.clientY),t=el?.closest(".cell[data-id]"),g=el?.closest(".grp[data-gid]"),tt=el?.closest(".tab[data-t]");clr();
+if(tt&&WORK.includes(tt.dataset.t)){tb=tt;tt.style.outline="3px solid var(--acc)";const k=tt.dataset.t;if(hov!==k){hov=k;hovT=Date.now()}else if(k!==tab&&Date.now()-hovT>700){tab=k;detail($("#app"));hov=null}return}hov=null;
+if(t){if(t!==cell){tgt=t;t.style.outline="3px solid var(--acc)"}}else if(g){tg=g;g.classList.add("drop")}};
+const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);removeEventListener("pointercancel",up);ghost.remove();cell.style.opacity="";const T=tgt,Gp=tg,Tb=tb;clr();
 const a=s.photos.findIndex(p=>p.id===id),A=s.photos[a];
-if(T){const c=s.photos.findIndex(p=>p.id===T.dataset.id),B=s.photos[c],same=A.g===B.g;s.photos.splice(a,1);let i=s.photos.indexOf(B);if(same&&a<c)i++;A.g=B.g;s.photos.splice(i,0,A);touch(s);body(s)}
-else if(Gp){s.photos.splice(a,1);A.g=Gp.dataset.gid;s.photos.push(A);touch(s);body(s)}};
+if(T){const c=s.photos.findIndex(p=>p.id===T.dataset.id),B=s.photos[c],same=A.g===B.g;s.photos.splice(a,1);let i=s.photos.indexOf(B);if(same&&a<c)i++;A.g=B.g;A.tab=B.tab;s.photos.splice(i,0,A);touch(s);body(s)}
+else if(Gp){s.photos.splice(a,1);A.g=Gp.dataset.gid;A.tab=(s.groups.find(g=>g.id===A.g)||{}).tab||A.tab;s.photos.push(A);touch(s);body(s)}
+else if(Tb){const t=Tb.dataset.t;let g=s.groups.filter(g=>g.tab===t).pop();if(!g){g={id:uid(),tab:t,fl:"",ir:"",irM:false,no:"",noM:false,place:""};s.groups.push(g)}s.photos.splice(a,1);A.g=g.id;A.tab=t;s.photos.push(A);tab=t;touch(s);detail($("#app"))}
+else if(A.tab!==tab){tab=A.tab;detail($("#app"))}};
 addEventListener("pointermove",mv);addEventListener("pointerup",up);addEventListener("pointercancel",up);mv(ev)});
 b.querySelectorAll("[data-gm]").forEach(e=>e.onclick=()=>{const g=G(e.dataset.gm);g[e.dataset.k]=!g[e.dataset.k];e.classList.toggle("on",!!g[e.dataset.k]);touch(s)});
 b.querySelectorAll("[data-gf]").forEach(e=>e.onchange=()=>{G(e.dataset.gf)[e.dataset.k]=e.value;touch(s)});
@@ -159,11 +170,31 @@ b.querySelectorAll("[data-gp]").forEach(e=>e.oninput=()=>{G(e.dataset.gp).place=
 b.querySelectorAll("[data-gx]").forEach(e=>e.onclick=()=>yn("この通りと、中の写真をすべて削除しますか？").then(ok=>{if(ok){const id=e.dataset.gx;s.photos=s.photos.filter(p=>p.g!==id);s.groups=s.groups.filter(g=>g.id!==id);touch(s);detail($("#app"))}}));
 b.querySelectorAll("[data-x]").forEach(e=>e.onclick=()=>yn("この写真を削除しますか？").then(ok=>{if(ok){s.photos=s.photos.filter(p=>p.id!==e.dataset.x);touch(s);detail($("#app"))}}));
 b.querySelectorAll("[data-r]").forEach(e=>e.onclick=async()=>{const f=(await pick(false))[0];if(!f)return;s.photos.find(p=>p.id===e.dataset.r).src=await shrink(f);touch(s);body(s)});
-b.querySelectorAll("[data-ap]").forEach(e=>e.onclick=async()=>{const fs=await pick(true);for(const f of fs)s.photos.push({id:uid(),tab,g:e.dataset.ap,label:"項目名",src:await shrink(f)});if(fs.length){touch(s);detail($("#app"))}});
-b.querySelectorAll(".grp").forEach((sec,i)=>{const gid=gs[i].id,on=v=>sec.classList.toggle("drop",v),isF=e=>[...(e.dataTransfer?.types||[])].includes("Files");
+const addPairs=async(gid,fs)=>{const n=Math.max(2,Math.ceil(fs.length/2)*2),pid=[];for(let i=0;i<n;i++){if(i%2===0)pid[0]=uid();s.photos.push({id:uid(),tab,g:gid,pair:pid[0],label:"項目名",src:fs[i]?await shrink(fs[i]):""})}touch(s);detail($("#app"))};
+b.querySelectorAll("[data-ap]").forEach(e=>e.onclick=async()=>{if(TG)return addPairs(e.dataset.ap,[]);const fs=await pick(true);for(const f of fs)s.photos.push({id:uid(),tab,g:e.dataset.ap,label:"項目名",src:await shrink(f)});if(fs.length){touch(s);detail($("#app"))}});
+b.querySelectorAll(".grp").forEach((sec,i)=>{const gid=gs[i].id,on=v=>sec.classList.toggle("drop",v),isF=isFile;
 sec.ondragover=e=>{if(!isF(e))return;e.preventDefault();on(true)};sec.ondragleave=e=>{if(!sec.contains(e.relatedTarget))on(false)};
-sec.ondrop=async e=>{if(!isF(e))return;e.preventDefault();on(false);const fs=[...e.dataTransfer.files].filter(f=>f.type.startsWith("image/"));for(const f of fs)s.photos.push({id:uid(),tab,g:gid,label:"項目名",src:await shrink(f)});if(fs.length){touch(s);detail($("#app"))}}});
+sec.ondrop=async e=>{if(!isF(e))return;e.preventDefault();on(false);const fs=[...e.dataTransfer.files].filter(f=>f.type.startsWith("image/"));if(TG&&fs.length)return addPairs(gid,fs);for(const f of fs)s.photos.push({id:uid(),tab,g:gid,label:"項目名",src:await shrink(f)});if(fs.length){touch(s);detail($("#app"))}}});
+b.querySelectorAll(".cell[data-id]").forEach(c=>{c.ondragover=e=>{if(!isFile(e))return;e.preventDefault();e.stopPropagation();c.closest(".grp")?.classList.remove("drop");c.style.outline="3px solid var(--acc)"};c.ondragleave=e=>{if(!c.contains(e.relatedTarget))c.style.outline=""};
+c.ondrop=async e=>{if(!isFile(e))return;e.preventDefault();e.stopPropagation();c.style.outline="";const fs=[...e.dataTransfer.files].filter(f=>f.type.startsWith("image/"));if(!fs.length)return;const p=s.photos.find(p=>p.id===c.dataset.id);p.src=await shrink(fs[0]);const rest=fs.slice(1);if(rest.length){if(TG)return addPairs(p.g,rest);for(const f of rest)s.photos.push({id:uid(),tab,g:p.g,label:"項目名",src:await shrink(f)})}touch(s);detail($("#app"))}});
+if(TG)$("#bk1").onclick=()=>bulk(s);
 if(TG)$("#ag").onclick=()=>{s.groups.push({id:uid(),tab,fl:"",ir:"",irM:false,no:"",noM:false,place:""});touch(s);body(s)}}
+const numList=M=>[...M].map(z=>{const [m,n]=z.split("|");return [+n,m==="1"]}).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+function bulk(s){const d=$("#blk"),sel={},nums={};let fl="1F";
+const key=(f,i)=>f+"|"+i,lab=(f,i,m)=>`${f} ${m?"又":""}${i}通り`;
+const paint=()=>{$("#bf").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.f===fl));
+$("#bc").innerHTML=IRO.map(i=>{const v=sel[key(fl,i)]||0;return `<button type="button" class="chip${v?" s"+v:""}" data-c="${i}">${v===2?"又":""}${i}</button>`}).join("");
+const L=[];["1F","2F"].forEach(f=>IRO.forEach(i=>{const k=key(f,i),v=sel[k];if(v){const M=nums[k]||new Set(),ks=numList(M);L.push(`<div class="br"><b>${lab(f,i,v===2)}</b>　番号：${ks.length?ks.map(([n,m])=>(m?"又":"")+n).join("・"):"なし"}${[0,1].map(m=>`<div class="ns"><span class="nl">${m?"又":"番号"}</span>${Array.from({length:20},(_,j)=>j+1).map(n=>`<button type="button" class="nb${M.has(m+"|"+n)?(m?" m":" on"):""}" data-u="${k}" data-n="${n}" data-m="${m}">${m?"又":""}${n}</button>`).join("")}</div>`).join("")}</div>`)}}));
+$("#bs").innerHTML=L.length?L.join(""):"通りを選んでください"};
+$("#bs").onclick=e=>{const t=e.target.closest("[data-u]");if(!t)return;const k=t.dataset.u,n=+t.dataset.n,M=nums[k]=nums[k]||new Set(),z=t.dataset.m+"|"+n;M.has(z)?M.delete(z):M.add(z);const sc=$("#bs").scrollTop;paint();$("#bs").scrollTop=sc};
+$("#bf").onclick=e=>{const b=e.target.closest("[data-f]");if(b){fl=b.dataset.f;paint()}};
+$("#bc").onclick=e=>{const b=e.target.closest("[data-c]");if(!b)return;const k=key(fl,b.dataset.c);sel[k]=((sel[k]||0)+1)%3;if(!sel[k])delete sel[k];paint()};
+$("#bn").onclick=()=>d.close();
+$("#by").onclick=()=>{let n=0;["1F","2F"].forEach(f=>IRO.forEach(i=>{const v=sel[key(f,i)];if(!v)return;const m=v===2;
+let g=s.groups.find(g=>g.tab==="金物"&&g.fl===f&&g.ir===i&&!!g.irM===m);if(!g){g={id:uid(),tab:"金物",fl:f,ir:i,irM:m,no:"",noM:false,place:""};s.groups.push(g);n++}
+for(const [k,nm] of numList(nums[key(f,i)]||new Set())){if(s.photos.some(p=>p.g===g.id&&String(p.no)===String(k)&&!!p.noM===nm))continue;const pid=uid();for(let j=0;j<2;j++)s.photos.push({id:uid(),tab:"金物",g:g.id,pair:pid,label:"項目名",src:"",no:String(k),noM:nm});n++}}));
+d.close();if(n){touch(s);body(s)}};
+paint();d.showModal()}
 function itemsPage(s){const b=$("#body"),L=lists();
 b.innerHTML=`<p class="name-l" style="margin:14px 0 4px">ここで直した項目名は、全部の現場で使われます（金物タブ以外）。</p>`+LT.map(t=>`<section class="grp"><div class="gh"><b class="gl">${t}</b></div><table>${L[t].map((n,i)=>`<tr><td>${esc(n)}</td><td style="width:1%;white-space:nowrap"><button class="ic" data-ie="${t}" data-i="${i}" aria-label="名前を変更">✎</button><button class="ic" data-idel="${t}" data-i="${i}" aria-label="削除">🗑</button></td></tr>`).join("")}</table><button class="btn ghost" style="margin-top:8px" data-ia="${t}">＋ 項目を追加</button></section>`).join("");
 b.querySelectorAll("[data-ia]").forEach(e=>e.onclick=async()=>{const t=e.dataset.ia,n=await ask(`${t}に項目名を追加`,"");if(n&&!L[t].includes(n)){L[t].push(n);touch(s)}itemsPage(s)});
@@ -172,7 +203,7 @@ b.querySelectorAll("[data-idel]").forEach(e=>e.onclick=()=>{const t=e.dataset.id
 function touch(s){s.updated=Date.now();save()}
 const loadImg=src=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=src});
 async function exportPdf(){const s=site();
-mig(s);const secs=[];WORK.forEach(t=>s.groups.filter(g=>g.tab===t).forEach(g=>{const ps=s.photos.filter(p=>p.g===g.id);if(ps.length)secs.push({g,ps})}));
+mig(s);const secs=[];WORK.forEach(t=>s.groups.filter(g=>g.tab===t).forEach(g=>{const ps=s.photos.filter(p=>p.g===g.id&&p.src);if(ps.length)secs.push({g,ps})}));
 if(!secs.length){alert("写真がありません。");return}
 const btn=$("#xl");btn.disabled=true;btn.textContent="作成中…";
 try{const W=1240,H=1754,cw=260,ch={tall:347,wide:195,sq:260}[s.shape||"tall"],rowH=ch+85,HH=60,top=145,bot=H-70,pdf=new window.jspdf.jsPDF({unit:"mm",format:"a4"}),F="'Hiragino Sans','Noto Sans JP','Yu Gothic',sans-serif";
@@ -188,7 +219,7 @@ const lb=it.p.label&&it.p.label!=="項目名"?it.p.label:"";if(lb)T(lb,21,"#222"
 const blob=pdf.output("blob"),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`${s.name}_金物検査.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},4000)}
 catch(e){if(e.code!=="declined")alert("PDFを保存できませんでした。")}
 btn.disabled=false;btn.textContent="⤓ PDF"}
-addEventListener("dragover",e=>{if(e.dataTransfer?.types?.includes("Files"))e.preventDefault()});addEventListener("drop",e=>{if(e.dataTransfer?.types?.includes("Files"))e.preventDefault()});
+addEventListener("dragover",e=>{if(isFile(e))e.preventDefault()});addEventListener("drop",e=>{if(isFile(e))e.preventDefault()});
 window.onhashchange=()=>{const h=location.hash.slice(1);if(h&&S.sites.some(s=>s.id===h)){cur=h;render()}else if(!h){cur=null;render()}};
 (async()=>{await load();const h=location.hash.slice(1);if(S.sites.some(s=>s.id===h))cur=h;render()})();
 </script></body></html>
