@@ -5,6 +5,9 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E📷%3C/text%3E%3C/svg%3E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="金物検査">
+<meta name="theme-color" content="#c0432a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 :root{--bg:#f9f7f3;--card:#fff;--ink:#222;--sub:#8a857c;--line:#e6e2da;--acc:#c0432a;--accink:#fff;--ph:#ece8e0;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -74,7 +77,7 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end}
 <dialog id="cfm"><p id="cm" style="margin:0 0 16px"></p><div class="row"><button class="btn ghost" id="cn">キャンセル</button><button class="btn" id="cy">削除</button></div></dialog>
 <dialog id="dlg"><b id="dt"></b><input id="di" maxlength="60"><div class="row"><button class="btn ghost" id="dc">キャンセル</button><button class="btn" id="dok">保存</button></div></dialog>
 <dialog id="blk"><b>通り芯一括</b><div style="margin-top:10px">階<div class="seg" id="bf"><button data-f="1F" class="on">1F</button><button data-f="2F">2F</button></div></div><div class="chips" id="bc"></div><div class="name-l" style="margin:0">通り：1回押す＝通り／2回押す＝又通り／3回押す＝やめる　番号：押すと選ぶ／もう一度でやめる</div><div id="bs"></div><div class="row"><button class="btn ghost" id="bn">キャンセル</button><button class="btn" id="by">追加</button></div></dialog>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="jspdf.umd.min.js"></script>
 <script>
 const TABS=["他金物","金物","設備工事","内装","外壁","構造","防蟻工事","屋根工事","土台工事","断熱","基礎工事","台帳","項目名"];
 const WORK=TABS.filter(t=>t!=="台帳"&&t!=="項目名"),LT=WORK.filter(t=>t!=="金物");
@@ -221,5 +224,6 @@ catch(e){if(e.code!=="declined")alert("PDFを保存できませんでした。")
 btn.disabled=false;btn.textContent="⤓ PDF"}
 addEventListener("dragover",e=>{if(isFile(e))e.preventDefault()});addEventListener("drop",e=>{if(isFile(e))e.preventDefault()});
 window.onhashchange=()=>{const h=location.hash.slice(1);if(h&&S.sites.some(s=>s.id===h)){cur=h;render()}else if(!h){cur=null;render()}};
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){navigator.serviceWorker.register("sw.js").catch(()=>{})}
 (async()=>{await load();const h=location.hash.slice(1);if(S.sites.some(s=>s.id===h))cur=h;render()})();
 </script></body></html>
